@@ -11,25 +11,29 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.get("/", (req, res) => {
+    res.status(200);
     res.send(users);
 });
 
 app.post("/", (req, res) => {
     if(!req.body.username || !req.body.password) {
-        res.send("User information not found");
+        res.status(400);
+        res.send("Lefting user information.");
     } else {
         users.push({
             username: req.body.username,
             password: req.body.password
         });
         
+        res.status(201);
         res.send("User added");
     }
 });
 
 app.put("/:username", (req, res) => {
     if(!req.body.username) {
-        res.send("User information not found");
+        res.status(400);
+        res.send("Lefting user information.");
     } else {
         const filteredUser = users.filter((user) => user.username === req.params.username);
 
@@ -42,8 +46,10 @@ app.put("/:username", (req, res) => {
             users = users.filter((user) => user.username !== req.params.username);
             users.push(updatedUser);
 
+            res.status(200);
             res.send("User updated!");
         } else {
+            res.status(404);
             res.send("User not found");
         }
     }
@@ -54,8 +60,11 @@ app.delete("/:username", (req, res) => {
     
     if(filteredUser.length > 0) {
         users = users.filter((user) => user.username !== req.params.username);
+        
+        res.status(200);
         res.send("User deleted!");
     } else {
+        res.status(404);
         res.send("User not found");
     }
 });
