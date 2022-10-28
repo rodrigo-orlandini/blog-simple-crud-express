@@ -31,7 +31,7 @@ app.post("/", (req, res) => {
 });
 
 app.put("/:username", (req, res) => {
-    if(!req.body.username) {
+    if(!req.body.newUsername) {
         res.status(400);
         res.send("Lefting user information.");
     } else {
@@ -40,7 +40,7 @@ app.put("/:username", (req, res) => {
         if(filteredUser.length > 0) {
             let updatedUser = {
                 ...filteredUser[0],
-                username: req.body.username
+                username: req.body.newUsername
             }
 
             users = users.filter((user) => user.username !== req.params.username);
